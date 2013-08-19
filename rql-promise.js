@@ -20,6 +20,16 @@ var rql = module.exports = function (query) {
   });
 };
 
+var disconnect = module.exports.disconnect = function () {
+  if (!_connected) {
+    return;
+  }
+  _connected = false;
+  _connPool.drain(function () {
+    _connPool.destroyAllNow();
+  });
+};
+
 module.exports.connect = function (config) {
   if (_connected) {
     disconnect();
@@ -37,16 +47,6 @@ module.exports.connect = function (config) {
     max: config.maxPoolSize || 10,
     min: 1,
     log: !! process.env.DEBUG
-  });
-};
-
-var disconnect = module.exports.disconnect = function () {
-  if (!_connected) {
-    return;
-  }
-  _connected = false;
-  _connPool.drain(function () {
-    _connPool.destroyAllNow();
   });
 };
 
