@@ -4,11 +4,11 @@ var r = require('rethinkdb'),
   fn = require('when/function'),
   poolModule = require('generic-pool');
 
-var _connPool, _initialized = false;
+var _connPool, _connected = false;
 
 var rql = module.exports = function (query) {
-  if (!_initialized) {
-    return when.reject('RQL Promise Error : Not initialized');
+  if (!_connected) {
+    return when.reject('RQL Promise Error : Not connected');
   }
   var dbConn = nodefn.call(_connPool.acquire.bind(_connPool)).
   otherwise(function (err) {
@@ -20,11 +20,11 @@ var rql = module.exports = function (query) {
   });
 };
 
-module.exports.init = function (config) {
-  if (_initialized) {
-    throw new Error('RQL Promise Error : Already initialized');
+module.exports.connect = function (config) {
+  if (_connected) {
+    disconnect();
   }
-  _initialized = true;
+  _connected = true;
   config = config ||  {};
   _connPool = poolModule.Pool({
     name: 'RethinkdDB connections',
@@ -34,17 +34,17 @@ module.exports.init = function (config) {
     destroy: function (connection) {
       connection.close();
     },
-    max: config.maxPoolSize || 5,
+    max: config.maxPoolSize || 10,
     min: 1,
     log: !! process.env.DEBUG
   });
 };
 
-module.exports.disconnect = function () {
-  if (!_initialized) {
+var disconnect = module.exports.disconnect = function () {
+  if (!_connected) {
     return;
   }
-  _initialized = false;
+  _connected = false;
   _connPool.drain(function () {
     _connPool.destroyAllNow();
   });

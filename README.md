@@ -14,14 +14,14 @@ Turn RethinkDB's RQL queries into promises. Uses [WhenJS](https://github.com/cuj
 var rql = require('rql-promise');
 var r = require('rethinkdb');
 
-// Connect - Do this only once, or you'll get an error
-rql.init({
+// Connect
+rql.connect({
   host: 'localhost',
   port: 28015,
   db: 'test',
   authKey: '',
-  maxPoolSize: 5 // Max number of simultaneous DB connections
-                 // Set to 1 to disable pooling
+  maxPoolSize: 10 // Max number of simultaneous DB connections
+                  // Set to 1 to disable pooling
 });
 
 // Make a query
@@ -37,3 +37,6 @@ then(function (cat) {}, function (err) {});
 // Disconnect
 rql.disconnect();
 ```
+
+### Licence
+MIT
