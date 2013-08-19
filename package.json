@@ -1,0 +1,29 @@
+{
+  "name": "rql-promise",
+  "version": "0.1.0",
+  "description": "Turn RethinkDB's RQL queries into promises",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:guillaumervls/rql-promise.git"
+  },
+  "author": "guillaumervls",
+  "readmeFilename": "README.md",
+  "main": "rql-promise.js",
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt": "~0.4.1"
+  },
+  "dependencies": {
+    "rethinkdb": "~1.8.0-0",
+    "when": "~2.3.0",
+    "generic-pool": "~2.0.4"
+  },
+  "keywords": [
+    "rethinkdb",
+    "database",
+    "rethink",
+    "db",
+    "promise",
+    "promises"
+  ]
+}
