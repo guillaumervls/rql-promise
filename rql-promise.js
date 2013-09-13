@@ -42,7 +42,9 @@ module.exports.connect = function (config) {
       r.connect(config, callback);
     },
     destroy: function (connection) {
-      connection.close();
+      try {
+        connection.close();
+      } catch (e) {}
     },
     max: config.maxPoolSize || 10,
     min: 1,
