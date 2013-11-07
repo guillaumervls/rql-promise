@@ -38,8 +38,9 @@ module.exports.connect = function (config) {
   config = config ||  {};
   _connPool = poolModule.Pool({
     name: 'RethinkdDB connections',
-    create: function (callback) {
-      r.connect(config, callback);
+    create: r.connect.bind(r, config),
+    validate: function (connection) {
+      return connection.open;
     },
     destroy: function (connection) {
       try {
