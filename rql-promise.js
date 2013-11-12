@@ -10,13 +10,12 @@ var rql = module.exports = function (query) {
   if (!_connected) {
     return when.reject('RQL Promise Error : Not connected');
   }
-  var dbConn = nodefn.call(_connPool.acquire.bind(_connPool)).
-  otherwise(function (err) {
-    console.log('RQL Promise Error : Could not connect to DB : ' + err);
-  });
-  return nodefn.call(query.run.bind(query), dbConn).
-  ensure(function () {
-    fn.call(_connPool.release.bind(_connPool), dbConn);
+  return nodefn.call(_connPool.acquire.bind(_connPool)).
+  then(function (dbConn) {
+    return nodefn.call(query.run.bind(query), dbConn).
+    ensure(function () {
+      fn.call(_connPool.release.bind(_connPool), dbConn);
+    });
   });
 };
 

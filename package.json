@@ -1,6 +1,6 @@
 {
   "name": "rql-promise",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Turn RethinkDB's RQL queries into promises",
   "repository": {
     "type": "git",
